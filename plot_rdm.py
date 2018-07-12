@@ -1,6 +1,6 @@
-
-
 def plot_rdm(rdm, mat=0, cmap=None):
+    '''function to visualize RDM based rank transformed and scaled similarity values
+        (only for plotting, raw/initial values remain unchanged'''
 
     from os.path import join as opj
     from scipy.io.matlab import loadmat

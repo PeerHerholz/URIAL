@@ -1,4 +1,5 @@
 def rdm_mat2csv(matfile, key, name=None, path=None, columns=None):
+    '''function to convert RDM from mat file to csv'''
 
     from os.path import join as opj
     from scipy.io.matlab import loadmat
