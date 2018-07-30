@@ -17,9 +17,23 @@ def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
         matfile = loadmat(rdm)
         rdm = matfile['rdm'][0][0]
 
+<<<<<<< Updated upstream:plot_rdm.py
     rdm = pd.read_csv(rdm, sep=',')
     if 'Unnamed: 0' in rdm:
         del rdm['Unnamed: 0']
+=======
+    if cmap == None:
+        cmap = 'Spectral_r'
+    else:
+        cmap = cmap
+
+    if isinstance(rdm, str) is True:
+        rdm = pd.read_csv(rdm, sep=',')
+        if 'Unnamed: 0' in rdm:
+            del rdm['Unnamed: 0']
+    else:
+        rdm=rdm
+>>>>>>> Stashed changes:urial/plotting/plot_rdm.py
 
     categories = list(rdm.columns)
 
@@ -33,8 +47,10 @@ def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
     rdm_array = rdm_array.flatten()
     rdm_rank_scale = vec_to_sym_matrix(rdm_array)
 
-    ax = sns.heatmap(rdm_rank_scale, xticklabels=categories, yticklabels=categories, cmap=cmap)
-    ax.set_yticklabels(categories, rotation=0)
+    categories_y = list(reversed(categories))
+
+    ax = sns.heatmap(rdm_rank_scale, xticklabels=categories, cmap=cmap)
+    ax.set_yticklabels(categories_y, rotation=0)
     ax.xaxis.tick_top()
     ax.set_xticklabels(categories, rotation=90)
     ax.collections[0].colorbar.set_label("pairwise similarities (iMDS), rank transformed & scaled [0,1]")
