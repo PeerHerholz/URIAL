@@ -8,15 +8,18 @@ def rdm_mat2csv(matfile, key, name=None, path=None, columns=None):
 
     mat = loadmat(matfile)
 
-    rdm = squareform(mat[key][0])
+    global rdm
 
-    rdm = pd.DataFrame(rdm)
+    if len(mat[key][0]) == len(mat[key][1]):
+        rdm = pd.DataFrame(mat[key])
+    else:
+        rdm = squareform(mat[key][0])
+        rdm = pd.DataFrame(rdm)
 
     if columns == None:
         print('no column names list provided')
     else:
         rdm.columns = columns
-
 
     if name == None:
         name = matfile.split(',')[0]
@@ -26,7 +29,6 @@ def rdm_mat2csv(matfile, key, name=None, path=None, columns=None):
         path = matfile.split(',')[0]
         path = path[0:path.rfind('/')]
 
-
-    rdm.to_csv(opj(path, name + '_rdm.csv'))
+    rdm.to_csv(opj(path, name + '_rdm.csv'), index=False)
 
     return(rdm)
