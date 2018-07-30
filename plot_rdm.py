@@ -1,25 +1,21 @@
-def plot_rdm(rdm, mat=0, cmap=None):
-    '''function to visualize RDM based rank transformed and scaled similarity values
-        (only for plotting, raw/initial values remain unchanged'''
+def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
+    '''
+    function to visualize RDM based rank transformed and scaled similarity values
+    (only for plotting, raw/initial values remain unchanged)
+    '''
 
     from os.path import join as opj
     from scipy.io.matlab import loadmat
-    from nilearn.connectome import sym_matrix_to_vec
     from scipy.stats import rankdata
-    from nilearn.connectome import vec_to_sym_matrix
-    from sklearn import preprocessing
+    import matplotlib.pyplot as plt
+    from sklearn.preprocessing import minmax_scale
     import pandas as pd
     import seaborn as sns
-    import matplotlib.pyplot as plt
+    from nilearn.connectome import sym_matrix_to_vec, vec_to_sym_matrix
 
-    if mat == 1:
+    if mat is True:
         matfile = loadmat(rdm)
         rdm = matfile['rdm'][0][0]
-
-    if cmap == None:
-        cmap = 'Spectral_r'
-    else:
-        cmap = cmap
 
     rdm = pd.read_csv(rdm, sep=',')
     if 'Unnamed: 0' in rdm:
@@ -32,10 +28,8 @@ def plot_rdm(rdm, mat=0, cmap=None):
     rdm_vec = sym_matrix_to_vec(rdm)
     rdm_vec = rankdata(rdm_vec)
 
-    min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 1), copy=True)
-
     rdm_array = rdm_vec.reshape(-1, 2)
-    rdm_array = min_max_scaler.fit_transform(rdm_array)
+    rdm_array = minmax_scale(rdm_array, (0, 1))
     rdm_array = rdm_array.flatten()
     rdm_rank_scale = vec_to_sym_matrix(rdm_array)
 
