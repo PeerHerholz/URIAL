@@ -17,9 +17,12 @@ def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
         matfile = loadmat(rdm)
         rdm = matfile['rdm'][0][0]
 
-    rdm = pd.read_csv(rdm, sep=',')
-    if 'Unnamed: 0' in rdm:
-        del rdm['Unnamed: 0']
+    if isinstance(rdm, str) is True:
+        rdm = pd.read_csv(rdm, sep=',')
+        if 'Unnamed: 0' in rdm:
+            del rdm['Unnamed: 0']
+    else:
+        rdm=rdm
 
     categories = list(rdm.columns)
 
