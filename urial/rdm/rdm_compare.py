@@ -1,4 +1,4 @@
-def rdm_compare(rdms, models, comp=None):
+def rdm_compare(rdms, models, comp=None, plot=None):
     '''function to compare target and model
         rmds'''
 
@@ -84,7 +84,7 @@ def rdm_compare(rdms, models, comp=None):
 
     list_cor_models=list()
 
-    if comp is None:
+    if comp is None or 'spearman':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(dict_rdms['rdm']):
                 list_cor_models.append(spearmanr(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
@@ -100,12 +100,27 @@ def rdm_compare(rdms, models, comp=None):
 
     model_comp['cor']=list_cor_models
 
-    ax=sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
-    plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
-    plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
-    rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling-lower_noise_ceiling), color='r', alpha=0.5)
-    ax.set_xticklabels(labels=list(dict_models['id']))
-    ax.add_patch(rect)
-    plt.tight_layout()
+    if plot is None:
+        print('results will no be plotted')
+    elif plot == 'bar':
+        ax=sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
+        plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
+        rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
+                             alpha=0.5)
+        ax.set_xticklabels(labels=list(dict_models['id']))
+        ax.add_patch(rect)
+        plt.tight_layout()
+    elif plot == 'violin':
+        ax=sns.violinplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
+        plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
+        rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
+                             alpha=0.5)
+        ax.set_xticklabels(labels=list(dict_models['id']))
+        ax.add_patch(rect)
+        plt.tight_layout()
+
+
 
     return model_comp
