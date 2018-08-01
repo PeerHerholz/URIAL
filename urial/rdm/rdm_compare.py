@@ -57,7 +57,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     if comp is None:
         print('rdm values will not be transformed')
 
-        rdm_avg = pd.DataFrame(np.mean(target_rdms, axis=0), columns=conds)
+        rdm_avg = pd.DataFrame(np.mean(target_rdms, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms):
             list_cor_rdm[index], list_p[index] = kendalltau(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
@@ -81,7 +81,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         for index, rdm in enumerate(target_rdms):
 
             target_rdms_trans[index] = vec_to_sym_matrix(rankdata(sym_matrix_to_vec(rdm)))
-            rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=conds)
+            rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms_trans):
             list_cor_rdm[index], list_p[index] = spearmanr(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
@@ -105,7 +105,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         for index, rdm in enumerate(target_rdms):
 
             target_rdms_trans[index] = vec_to_sym_matrix(mstats.zscore(sym_matrix_to_vec(rdm)))
-            rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=conds)
+            rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms_trans):
             list_cor_rdm[index], list_p[index] = pearsonr(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
