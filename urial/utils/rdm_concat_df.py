@@ -62,7 +62,7 @@ def rdm_concat_df(path, outfile=None, prefix=None, addata=None, columns=None):
         pkl_rdm.close()
     else:
         outfile = outfile
-        print('outputfile is saved as `%s.pkl` in your current directory'  % outfile)
+        print('outputfile is saved as `%s.pkl` in your current directory' % outfile)
         pkl_rdm = open("%s.pkl" % outfile, "wb")
         pickle.dump(dict_rdms, pkl_rdm)
         pkl_rdm.close()

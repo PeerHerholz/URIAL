@@ -31,16 +31,18 @@ def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
     rdm_vec = sym_matrix_to_vec(rdm)
     rdm_vec = rankdata(rdm_vec)
 
-    rdm_array = rdm_vec.reshape(-1, 2)
+    rdm_array = rdm_vec.reshape(-1, 1)
     rdm_array = minmax_scale(rdm_array, (0, 1))
     rdm_array = rdm_array.flatten()
     rdm_rank_scale = vec_to_sym_matrix(rdm_array)
 
-    ax = sns.heatmap(rdm_rank_scale, xticklabels=categories, yticklabels=categories, cmap=cmap)
-    ax.set_yticklabels(categories, rotation=0)
+    y_categories = list(reversed(categories))
+
+    ax = sns.heatmap(rdm_rank_scale, xticklabels=categories, yticklabels=y_categories, cmap=cmap)
+    ax.set_yticklabels(y_categories, rotation=0)
     ax.xaxis.tick_top()
     ax.set_xticklabels(categories, rotation=90)
-    ax.collections[0].colorbar.set_label("pairwise similarities (iMDS), rank transformed & scaled [0,1]")
+    ax.collections[0].colorbar.set_label("pairwise similarities, rank transformed & scaled [0,1]")
     plt.tight_layout()
 
 def plot_mds(rdm):
@@ -60,13 +62,13 @@ def plot_mds(rdm):
 
     ## computation/transformation section
 
+    # read in the rdm in .csv format, creating a data frame
     if isinstance(rdm, str) is True:
         df = pd.read_csv(rdm)
         if 'Unnamed: 0' in rdm:
             del rdm['Unnamed: 0']
     else:
         df=rdm
-    # read in the rdm in .csv format, creating a data frame
 
     df.index = df.columns  # set data frame index based on columns
 
