@@ -10,14 +10,11 @@ def rdm_dist(rdms, comp=None):
             self[k] = []
             return self[k]
 
-    from os.path import join as opj
-    from scipy.io.matlab import loadmat
     import pandas as pd
     from collections import OrderedDict
     import pickle
-    import numpy as np
     from scipy.spatial import distance
-    from scipy.stats import pearsonr, spearmanr
+    from scipy.stats import pearsonr, spearmanr, rankdata
     from itertools import combinations
 
     if isinstance(rdms, str) is True:

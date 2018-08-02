@@ -4,7 +4,6 @@ def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
     (only for plotting, raw/initial values remain unchanged)
     '''
 
-    from os.path import join as opj
     from scipy.io.matlab import loadmat
     from scipy.stats import rankdata
     import matplotlib.pyplot as plt

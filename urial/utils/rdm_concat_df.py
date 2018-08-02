@@ -5,10 +5,8 @@ def rdm_concat_df(path, outfile=None, prefix=None, addata=None, columns=None):
     global dict_rdms
     global DefaultListOrderedDict
 
-    from os.path import join as opj
     import sys
     from glob import glob
-    from scipy.io.matlab import loadmat
     import pandas as pd
     from collections import OrderedDict
     import pickle
