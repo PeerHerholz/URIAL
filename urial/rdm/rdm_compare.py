@@ -174,12 +174,12 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         ax.set_xticklabels(labels=list(dict_models['id']))
-        if comp is None or 'spearman':
-            ax.set(ylabel='spearman correlation with target RDM')
+        if comp is None:
+            ax.set(ylabel='kendall tau a correlation with target RDM')
         if comp == 'pearson':
             ax.set(ylabel='pearson correlation with target RDM')
-        if comp == 'kendalltau':
-            ax.set(ylabel='kendall tau a correlation with target RDM')
+        if comp == 'spearman':
+            ax.set(ylabel='spearman correlation with target RDM')
         ax.add_patch(rect)
         plt.tight_layout()
     elif plot == 'violin':
@@ -189,12 +189,12 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         ax.set_xticklabels(labels=list(dict_models['id']))
-        if comp is None or 'spearman':
-            ax.set(ylabel='spearman correlation with target RDM')
+        if comp is None:
+            ax.set(ylabel='kendall tau a correlation with target RDM')
         if comp == 'pearson':
             ax.set(ylabel='pearson correlation with target RDM')
-        if comp == 'kendalltau':
-            ax.set(ylabel='kendall tau a correlation with target RDM')
+        if comp == 'spearman':
+            ax.set(ylabel='spearman correlation with target RDM')
         ax.add_patch(rect)
         plt.tight_layout()
 
