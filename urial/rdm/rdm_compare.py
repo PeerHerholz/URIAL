@@ -1,22 +1,23 @@
 def rdm_compare(rdms, models, comp=None, plot=None):
-    '''function to compare target and model
-        rmds'''
+    '''function to compare target and model rmds'''
 
     global dict_rdms
     global DefaultListOrderedDict
 
     from glob import glob
-    import pandas as pd
     from collections import OrderedDict
-    from scipy.spatial import distance
-    from nilearn.connectome import sym_matrix_to_vec, vec_to_sym_matrix
-    from scipy.stats import rankdata, spearmanr, kendalltau, pearsonr, mstats
-    import numpy as np
     from itertools import combinations
     import pickle
-    import seaborn as sns
-    import matplotlib.pyplot as plt
     import copy
+
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.spatial import distance
+    from scipy.stats import rankdata, spearmanr, kendalltau, pearsonr, mstats
+
+    import pandas as pd
+    import seaborn as sns
+    from nilearn.connectome import sym_matrix_to_vec, vec_to_sym_matrix
 
     class DefaultListOrderedDict(OrderedDict):
         def __missing__(self,k):
@@ -60,7 +61,8 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         rdm_avg = pd.DataFrame(np.mean(target_rdms, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms):
-            list_cor_rdm[index], list_p[index] = kendalltau(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
+            list_cor_rdm[index], list_p[index] = kendalltau(part_rdm.flatten(),
+                                                            rdm_avg.as_matrix().flatten())
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -84,7 +86,8 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms_trans):
-            list_cor_rdm[index], list_p[index] = spearmanr(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
+            list_cor_rdm[index], list_p[index] = spearmanr(part_rdm.flatten(),
+                                                           rdm_avg.as_matrix().flatten())
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -128,7 +131,8 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     upper_noise_ceiling = np.mean(list_cor_rdm)
     lower_noise_ceiling=np.mean(list_cor_rdm_sub)
 
-    model_comp = pd.DataFrame(columns=['participant', 'models', 'cor'], index=np.arange(len(dict_models['id'])*len(dict_rdms['id'])))
+    model_comp = pd.DataFrame(columns=['participant', 'models', 'cor'],
+                              index=np.arange(len(dict_models['id'])*len(dict_rdms['id'])))
     model_comp['participant']=dict_rdms['id']*len(dict_models['id'])
     model_comp['models']=sorted(dict_models['id']*len(dict_rdms['id']))
 
@@ -145,57 +149,34 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         ids_rdms.append(mod_ids)
 
     if comp is None:
-        for index, model_rdm in enumerate(dict_models['rdm']):
-            for i, sub_rdm in enumerate(target_rdms):
-            list_cor_models.append(kendalltau(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
-            rdms_dist = [kendalltau(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
-            rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-    elif comp == 'spearman':
+        corr_func = kendalltau
+    elif comp in {'spearman', "pearson}:
+        corr_func = spearmanr if comp == "spearman" else pearsonr
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
-                list_cor_models.append(spearmanr(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
-                rdms_dist = [spearmanr(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
-                rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-    elif comp == 'pearson':
-        for index, model_rdm in enumerate(dict_models['rdm']):
-            for i, sub_rdm in enumerate(target_rdms_trans):
-                list_cor_models.append(pearsonr(sub_rdm.flatten(), model_rdm.as_matrix().flatten())[0])
-                rdms_dist = [pearsonr(x.flatten(), y.flatten())[0] for x, y in combinations(snd_rdms, 2)]
+                list_cor_models.append(corr_func(sub_rdm.flatten(), model_rdm.as_matrix().flatten())[0])
+                rdms_dist = [corr_func(x.flatten(), y.flatten())[0] for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
 
-    model_comp['cor']=list_cor_models
+    model_comp['cor'] = list_cor_models
 
     if plot is None:
-        print('results will no be plotted')
-    elif plot == 'bar':
-        ax=sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
-        plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
-        plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
-        rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
-                             alpha=0.5)
+        print('Results will no be plotted')
+    elif plot in {"bar", "violin"}:
+        if plot == 'bar':
+            ax = sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
+        else:
+            ax = sns.violinplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
+        for ceiling in (upper_noise_ceiling, lower_noise_ceiling):
+            ax.plot(np.linspace(-20, 120, 1000), [ceiling] * 1000, 'r', alpha=0.1)
+        rect = ax.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling),
+                            color='r', alpha=0.5)
         ax.set_xticklabels(labels=list(dict_models['id']))
-        if comp is None:
-            ax.set(ylabel='kendall tau a correlation with target RDM')
-        if comp == 'pearson':
-            ax.set(ylabel='pearson correlation with target RDM')
-        if comp == 'spearman':
-            ax.set(ylabel='spearman correlation with target RDM')
+        ax.set(ylabel='{} a correlation with target RDM'.format("kendall tau" if comp is None else comp))
         ax.add_patch(rect)
         plt.tight_layout()
-    elif plot == 'violin':
-        ax=sns.violinplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
-        plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
-        plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
-        rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
-                             alpha=0.5)
-        ax.set_xticklabels(labels=list(dict_models['id']))
-        if comp is None:
-            ax.set(ylabel='kendall tau a correlation with target RDM')
-        if comp == 'pearson':
-            ax.set(ylabel='pearson correlation with target RDM')
-        if comp == 'spearman':
-            ax.set(ylabel='spearman correlation with target RDM')
-        ax.add_patch(rect)
-        plt.tight_layout()
+    else:
+        msg = str(plot) + " as plot type is not supported! Please stick to None, 'bar' or 'violin'."
+        raise(ValueError, msg)
 
     return rdm_avg, model_comp, rdms_dist
