@@ -40,30 +40,8 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     list_p = list(range(0, len(target_rdms)))
     target_rdms_trans = list(range(0, len(target_rdms)))
 
-    if comp is None:
-        print('rdm values will not be transformed')
 
-        rdm_avg = pd.DataFrame(np.mean(target_rdms, axis=0), columns=target_conds)
-
-        for index, part_rdm in enumerate(target_rdms):
-            list_cor_rdm[index], list_p[index] = kendalltau(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
-
-        list_cor_sub = list()
-        list_cor_rdm_sub = list()
-        list_p_sub = list()
-
-        for index, part in enumerate(target_rdms):
-            tmp_rdms = target_rdms.copy()
-            tmp_part = target_rdms[index]
-            tmp_rdms.pop(index)
-            tmp_rdm_avg = np.mean(tmp_rdms, axis=0)
-            list_cor_sub.append(kendalltau(tmp_part.flatten(), tmp_rdm_avg.flatten()))
-
-        for i, cor in enumerate(list_cor_sub):
-            list_cor_rdm_sub.append(cor.correlation)
-            list_p_sub.append(cor.pvalue)
-
-    elif comp == 'spearman':
+    if comp is None or comp == 'spearman':
         for index, rdm in enumerate(target_rdms):
             target_rdms_trans[index] = vec_to_sym_matrix(rankdata(sym_matrix_to_vec(rdm)))
             rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
@@ -81,6 +59,29 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             tmp_rdms.pop(index)
             tmp_rdm_avg = np.mean(tmp_rdms, axis=0)
             list_cor_sub.append(spearmanr(tmp_part.flatten(), tmp_rdm_avg.flatten()))
+
+        for i, cor in enumerate(list_cor_sub):
+            list_cor_rdm_sub.append(cor.correlation)
+            list_p_sub.append(cor.pvalue)
+
+    elif comp == 'kendalltaua':
+        for index, rdm in enumerate(target_rdms):
+            target_rdms_trans[index] = vec_to_sym_matrix(rankdata(sym_matrix_to_vec(rdm)))
+            rdm_avg = pd.DataFrame(np.mean(target_rdms, axis=0), columns=target_conds)
+
+        for index, part_rdm in enumerate(target_rdms):
+            list_cor_rdm[index], list_p[index] = kendalltau(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
+
+        list_cor_sub = list()
+        list_cor_rdm_sub = list()
+        list_p_sub = list()
+
+        for index, part in enumerate(target_rdms):
+            tmp_rdms = target_rdms.copy()
+            tmp_part = target_rdms[index]
+            tmp_rdms.pop(index)
+            tmp_rdm_avg = np.mean(tmp_rdms, axis=0)
+            list_cor_sub.append(kendalltau(tmp_part.flatten(), tmp_rdm_avg.flatten()))
 
         for i, cor in enumerate(list_cor_sub):
             list_cor_rdm_sub.append(cor.correlation)
@@ -129,17 +130,17 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     for mod_ids in model_ids:
         ids_rdms.append(mod_ids)
 
-    if comp is None:
-        for index, model_rdm in enumerate(dict_models['rdm']):
-            for i, sub_rdm in enumerate(target_rdms):
-                list_cor_models.append(kendalltau(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
-            rdms_dist = [kendalltau(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
-            rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-    elif comp == 'spearman':
+    if comp is None or comp == 'spearman':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
                 list_cor_models.append(spearmanr(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
                 rdms_dist = [spearmanr(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
+                rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
+    elif comp == 'kendalltaua':
+        for index, model_rdm in enumerate(dict_models['rdm']):
+            for i, sub_rdm in enumerate(target_rdms):
+                list_cor_models.append(kendalltau(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
+                rdms_dist = [kendalltau(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
     elif comp == 'pearson':
         for index, model_rdm in enumerate(dict_models['rdm']):
@@ -159,12 +160,12 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         ax.set_xticklabels(labels=list(dict_models['id']))
-        if comp is None:
-            ax.set(ylabel='kendall tau a correlation with target RDM')
+        if comp is None or comp == 'spearman':
+            ax.set(ylabel='spearman correlation with target RDM')
         if comp == 'pearson':
             ax.set(ylabel='pearson correlation with target RDM')
-        if comp == 'spearman':
-            ax.set(ylabel='spearman correlation with target RDM')
+        if comp == 'kendalltaua':
+            ax.set(ylabel='kendall tau a correlation with target RDM')
         ax.add_patch(rect)
         plt.tight_layout()
     elif plot == 'violin':
@@ -174,12 +175,12 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         ax.set_xticklabels(labels=list(dict_models['id']))
-        if comp is None:
-            ax.set(ylabel='kendall tau a correlation with target RDM')
+        if comp is None or comp == 'spearman':
+            ax.set(ylabel='spearman correlation with target RDM')
         if comp == 'pearson':
             ax.set(ylabel='pearson correlation with target RDM')
-        if comp == 'spearman':
-            ax.set(ylabel='spearman correlation with target RDM')
+        if comp == 'kendalltaua':
+            ax.set(ylabel='kendall tau a correlation with target RDM')
         ax.add_patch(rect)
         plt.tight_layout()
 
