@@ -40,7 +40,6 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     list_p = list(range(0, len(target_rdms)))
     target_rdms_trans = list(range(0, len(target_rdms)))
 
-
     if comp is None or comp == 'spearman':
         for index, rdm in enumerate(target_rdms):
             target_rdms_trans[index] = vec_to_sym_matrix(rankdata(sym_matrix_to_vec(rdm)))
@@ -152,7 +151,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     model_comp['cor'] = list_cor_models
 
     if plot is None:
-        print('results will no be plotted')
+        print('results will not be plotted')
     elif plot == 'bar':
         ax = sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
         plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)

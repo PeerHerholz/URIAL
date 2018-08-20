@@ -1,4 +1,4 @@
-def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
+def plot_rdm(rdm, mat=False, model=False, cmap="Spectral_r"):
     '''
     function to visualize RDM based rank transformed and scaled similarity values
     (only for plotting, raw/initial values remain unchanged)
@@ -24,24 +24,40 @@ def plot_rdm(rdm, mat=False, cmap="Spectral_r"):
         rdm=rdm
 
     categories = list(rdm.columns)
-
-    rdm = rdm.as_matrix()
-
-    rdm_vec = sym_matrix_to_vec(rdm)
-    rdm_vec = rankdata(rdm_vec)
-
-    rdm_array = rdm_vec.reshape(-1, 1)
-    rdm_array = minmax_scale(rdm_array, (0, 1))
-    rdm_array = rdm_array.flatten()
-    rdm_rank_scale = vec_to_sym_matrix(rdm_array)
-
     y_categories = list(reversed(categories))
 
-    ax = sns.heatmap(rdm_rank_scale, xticklabels=categories, yticklabels=y_categories, cmap=cmap)
+    if model is False:
+
+        rdm = rdm.as_matrix()
+
+        rdm_vec = sym_matrix_to_vec(rdm)
+        rdm_vec = rankdata(rdm_vec)
+
+        rdm_array = rdm_vec.reshape(-1, 1)
+        rdm_array = minmax_scale(rdm_array, (0, 1))
+        rdm_array = rdm_array.flatten()
+        rdm_rank_scale = vec_to_sym_matrix(rdm_array)
+
+        ax = sns.heatmap(rdm_rank_scale, xticklabels=categories, yticklabels=y_categories, cmap=cmap)
+        ax.collections[0].colorbar.set_label("pairwise similarities, rank transformed & scaled [0,1]")
+
+    if model is True:
+
+        rdm = rdm.as_matrix()
+
+        rdm_vec = sym_matrix_to_vec(rdm)
+
+        rdm_array = rdm_vec.reshape(-1, 1)
+        rdm_array = minmax_scale(rdm_array, (0, 1))
+        rdm_array = rdm_array.flatten()
+        rdm_scale = vec_to_sym_matrix(rdm_array)
+
+        ax = sns.heatmap(rdm_scale, xticklabels=categories, yticklabels=y_categories, cmap=cmap)
+
     ax.set_yticklabels(y_categories, rotation=0)
     ax.xaxis.tick_top()
     ax.set_xticklabels(categories, rotation=90)
-    ax.collections[0].colorbar.set_label("pairwise similarities, rank transformed & scaled [0,1]")
+    ax.collections[0].colorbar.set_label("pairwise similarities, scaled [0,1]")
     plt.tight_layout()
 
 def plot_mds(rdm):

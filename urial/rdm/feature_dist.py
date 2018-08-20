@@ -31,7 +31,7 @@ def feature_dist(path, prefix=None, dist=None, order=None):
     for file in list_features:
         id.append(file[(file.rfind('_') + 1):file.rfind('.')])
         feature.append(file[(file.rfind('/') + 1):file.rfind('.')])
-        data.append(pd.read_csv(file, header=None))
+        data.append(pd.read_csv(file))
 
     global dict_features
 
