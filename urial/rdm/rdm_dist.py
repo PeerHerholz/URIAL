@@ -43,4 +43,4 @@ def rdm_dist(rdms, comp=None):
 
     rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
 
-    return(rdms_dist)
+    return rdms_dist

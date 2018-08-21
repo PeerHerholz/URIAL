@@ -39,7 +39,11 @@ def plot_rdm(rdm, mat=False, model=False, cmap="Spectral_r"):
         rdm_rank_scale = vec_to_sym_matrix(rdm_array)
 
         ax = sns.heatmap(rdm_rank_scale, xticklabels=categories, yticklabels=y_categories, cmap=cmap)
+        ax.set_yticklabels(y_categories, rotation=0)
+        ax.xaxis.tick_top()
+        ax.set_xticklabels(categories, rotation=90)
         ax.collections[0].colorbar.set_label("pairwise similarities, rank transformed & scaled [0,1]")
+        plt.tight_layout()
 
     if model is True:
 
@@ -53,12 +57,11 @@ def plot_rdm(rdm, mat=False, model=False, cmap="Spectral_r"):
         rdm_scale = vec_to_sym_matrix(rdm_array)
 
         ax = sns.heatmap(rdm_scale, xticklabels=categories, yticklabels=y_categories, cmap=cmap)
-
-    ax.set_yticklabels(y_categories, rotation=0)
-    ax.xaxis.tick_top()
-    ax.set_xticklabels(categories, rotation=90)
-    ax.collections[0].colorbar.set_label("pairwise similarities, scaled [0,1]")
-    plt.tight_layout()
+        ax.set_yticklabels(y_categories, rotation=0)
+        ax.xaxis.tick_top()
+        ax.set_xticklabels(categories, rotation=90)
+        ax.collections[0].colorbar.set_label("pairwise similarities, scaled [0,1]")
+        plt.tight_layout()
 
 def plot_mds(rdm):
     '''function to visualize RDM via multidimensional scaling'''
