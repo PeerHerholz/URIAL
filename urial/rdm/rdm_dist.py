@@ -29,7 +29,7 @@ def rdm_dist(rdms, comp=None):
 
     global rdms_dist
 
-    if comp is None:
+    if comp is None or comp == 'euclidean':
         rdms_dist = [distance.euclidean(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in combinations(rdms, 2)]
     elif comp == 'spearman':
          for index, rdm in enumerate(rdms):
