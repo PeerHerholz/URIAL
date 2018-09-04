@@ -28,8 +28,8 @@ def rdm_avg(rdms):
     for index, rdm in enumerate(rdms):
         rdms[index] = rdms[index].as_matrix()
 
-    global rdm_avg
+    global avg_rdm
 
-    rdm_avg = pd.DataFrame(np.mean(rdms, axis=0), columns=conds)
+    avg_rdm = pd.DataFrame(np.mean(rdms, axis=0), columns=conds)
 
-    return(rdm_avg)
+    return(avg_rdm)

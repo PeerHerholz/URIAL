@@ -26,6 +26,12 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             dict_models = pickle.load(f)
             models = dict_models['rdm']
             model_ids = dict_models['id']
+
+            models_zip = [x for _, x in sorted(zip(model_ids, models))]
+
+            dict_models['rdm'] = models_zip
+            models = models_zip
+
     else:
         models = models
 
@@ -126,7 +132,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
 
     ids_rdms = list()
     ids_rdms.append('group average')
-    for mod_ids in model_ids:
+    for mod_ids in sorted(model_ids):
         ids_rdms.append(mod_ids)
 
     if comp is None or comp == 'spearman':
