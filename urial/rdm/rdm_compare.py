@@ -158,7 +158,6 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
-        ax.set_xticklabels(labels=list(dict_models['id']))
         if comp is None or comp == 'spearman':
             ax.set(ylabel='spearman correlation with target RDM')
         if comp == 'pearson':
@@ -173,7 +172,6 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
-        ax.set_xticklabels(labels=list(dict_models['id']))
         if comp is None or comp == 'spearman':
             ax.set(ylabel='spearman correlation with target RDM')
         if comp == 'pearson':
