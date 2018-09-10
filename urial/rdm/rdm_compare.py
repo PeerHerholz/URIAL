@@ -141,18 +141,21 @@ def rdm_compare(rdms, models, comp=None, plot=None):
                 list_cor_models.append(spearmanr(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
                 rdms_dist = [spearmanr(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
+                rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
     elif comp == 'kendalltaua':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms):
                 list_cor_models.append(kendalltau(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
                 rdms_dist = [kendalltau(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
+                rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
                 list_cor_models.append(pearsonr(sub_rdm.flatten(), model_rdm.as_matrix().flatten())[0])
                 rdms_dist = [pearsonr(x.flatten(), y.flatten())[0] for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
+                rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
 
     model_comp['cor'] = list_cor_models
 
@@ -186,5 +189,6 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             ax.set(ylabel='kendall tau a correlation with target RDM')
         ax.add_patch(rect)
         plt.tight_layout()
+
 
     return rdm_avg, model_comp, rdms_dist

@@ -10,6 +10,7 @@ def feature_dist(path, prefix=None, dist=None, order=None):
     import pandas as pd
     from collections import OrderedDict
     from scipy.spatial import distance
+    from scipy.stats import spearmanr, kendalltau, pearsonr
     from itertools import combinations
 
     if prefix is None:
@@ -78,13 +79,28 @@ def feature_dist(path, prefix=None, dist=None, order=None):
     if dist is None:
         feat_dist = [distance.euclidean(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
                         combinations(features, 2)]
+        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
     elif dist == 'correlation':
         feat_dist = [distance.correlation(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
                         combinations(features, 2)]
     elif dist == 'minkowski':
         feat_dist = [distance.minkowskicorrelation(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
                         combinations(features, 2)]
+    elif dist == 'spearman':
+        feat_dist = [spearmanr(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+                        combinations(features, 2)]
+        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
+        feat_dist = feat_dist.mask(feat_dist.values > 0, 1 - feat_dist.values)
+    elif dist == 'pearson':
+        feat_dist = [pearsonr(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+                        combinations(features, 2)]
+        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
+        feat_dist = feat_dist.mask(feat_dist.values > 0, 1 - feat_dist.values)
+    elif dist == 'kendalltau':
+        feat_dist = [kendalltau(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+                        combinations(features, 2)]
+        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
+        feat_dist = feat_dist.mask(feat_dist.values > 0, 1 - feat_dist.values)
 
-    feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
 
     return feat_dist

@@ -31,16 +31,20 @@ def rdm_dist(rdms, comp=None):
 
     if comp is None or comp == 'euclidean':
         rdms_dist = [distance.euclidean(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in combinations(rdms, 2)]
+        rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
     elif comp == 'spearman':
          for index, rdm in enumerate(rdms):
              rdms[index] = rankdata(rdm)
-         rdms_dist = [spearmanr(x.flatten(), y.flatten()).correlation for x, y in
-                      combinations(rdms, 2)]
+         rdms_dist = [spearmanr(x.flatten(), y.flatten()).correlation for x, y in combinations(rdms, 2)]
+         rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
+         rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, rdm in enumerate(rdms):
                 rdms[index] = mstats.zscore(rdm)
         rdms_dist = [pearsonr(x.flatten(), y.flatten())[0] for x, y in combinations(rdms, 2)]
+        rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
+        rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
 
-    rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
+
 
     return rdms_dist
