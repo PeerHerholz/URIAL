@@ -148,7 +148,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
                 list_cor_models.append(kendalltau(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
                 rdms_dist = [kendalltau(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-                rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
+                #rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
@@ -163,8 +163,8 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         print('results will not be plotted')
     elif plot == 'bar':
         ax = sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
-        plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
-        plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         if comp is None or comp == 'spearman':
@@ -177,8 +177,8 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         plt.tight_layout()
     elif plot == 'violin':
         ax = sns.violinplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
-        plt.plot(np.linspace(-20, 120, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
-        plt.plot(np.linspace(-20, 120, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         if comp is None or comp == 'spearman':
@@ -189,6 +189,5 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             ax.set(ylabel='kendall tau a correlation with target RDM')
         ax.add_patch(rect)
         plt.tight_layout()
-
 
     return rdm_avg, model_comp, rdms_dist
