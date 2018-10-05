@@ -24,7 +24,7 @@ def plot_rdm(rdm, mat=False, model=False, cmap="Spectral_r"):
         rdm=rdm
 
     categories = list(rdm.columns)
-    y_categories = list(reversed(categories))
+    y_categories = list(categories)
 
     if model is False:
 

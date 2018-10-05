@@ -1,5 +1,5 @@
 def rdm_compare(rdms, models, comp=None, plot=None):
-    '''function to compare target and model rmds'''
+    '''function to compare target and model rdms'''
 
     import pandas as pd
     from scipy.spatial import distance
@@ -52,7 +52,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms_trans):
-            list_cor_rdm[index], list_p[index] = spearmanr(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
+            list_cor_rdm[index], list_p[index] = spearmanr(sym_matrix_to_vec(part_rdm), sym_matrix_to_vec(rdm_avg.as_matrix()))
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -63,7 +63,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             tmp_part = target_rdms_trans[index]
             tmp_rdms.pop(index)
             tmp_rdm_avg = np.mean(tmp_rdms, axis=0)
-            list_cor_sub.append(spearmanr(tmp_part.flatten(), tmp_rdm_avg.flatten()))
+            list_cor_sub.append(spearmanr(sym_matrix_to_vec(tmp_part), sym_matrix_to_vec(tmp_rdm_avg)))
 
         for i, cor in enumerate(list_cor_sub):
             list_cor_rdm_sub.append(cor.correlation)
@@ -75,7 +75,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             rdm_avg = pd.DataFrame(np.mean(target_rdms, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms):
-            list_cor_rdm[index], list_p[index] = kendalltau(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
+            list_cor_rdm[index], list_p[index] = kendalltau(sym_matrix_to_vec(part_rdm), sym_matrix_to_vec(rdm_avg.as_matrix()))
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -86,7 +86,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             tmp_part = target_rdms[index]
             tmp_rdms.pop(index)
             tmp_rdm_avg = np.mean(tmp_rdms, axis=0)
-            list_cor_sub.append(kendalltau(tmp_part.flatten(), tmp_rdm_avg.flatten()))
+            list_cor_sub.append(kendalltau(sym_matrix_to_vec(tmp_part), sym_matrix_to_vec(tmp_rdm_avg)))
 
         for i, cor in enumerate(list_cor_sub):
             list_cor_rdm_sub.append(cor.correlation)
@@ -98,7 +98,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms_trans):
-            list_cor_rdm[index], list_p[index] = pearsonr(part_rdm.flatten(), rdm_avg.as_matrix().flatten())
+            list_cor_rdm[index], list_p[index] = pearsonr(sym_matrix_to_vec(part_rdm), sym_matrix_to_vec(rdm_avg.as_matrix()))
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -109,7 +109,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             tmp_part = target_rdms_trans[index]
             tmp_rdms.pop(index)
             tmp_rdm_avg = np.mean(tmp_rdms, axis=0)
-            list_cor_sub.append(pearsonr(tmp_part.flatten(), tmp_rdm_avg.flatten()))
+            list_cor_sub.append(pearsonr(sym_matrix_to_vec(tmp_part), sym_matrix_to_vec(tmp_rdm_avg)))
 
         for i, cor in enumerate(list_cor_sub):
             list_cor_rdm_sub.append(cor[0])
@@ -126,9 +126,9 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     list_cor_models = list()
 
     snd_rdms = list()
-    snd_rdms.append(rdm_avg.as_matrix())
+    snd_rdms.append(sym_matrix_to_vec(rdm_avg.as_matrix()))
     for mod_rdm in models:
-        snd_rdms.append(mod_rdm.as_matrix())
+        snd_rdms.append(sym_matrix_to_vec(mod_rdm.as_matrix()))
 
     ids_rdms = list()
     ids_rdms.append('group average')
@@ -138,24 +138,26 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     if comp is None or comp == 'spearman':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
-                list_cor_models.append(spearmanr(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
-                rdms_dist = [spearmanr(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
+                list_cor_models.append(spearmanr(sym_matrix_to_vec(sub_rdm), sym_matrix_to_vec(model_rdm.as_matrix())).correlation)
+                rdms_dist = [spearmanr(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-                rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
+                np.fill_diagonal(rdms_dist.values, 1)
+                rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
     elif comp == 'kendalltaua':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms):
-                list_cor_models.append(kendalltau(sub_rdm.flatten(), model_rdm.as_matrix().flatten()).correlation)
-                rdms_dist = [kendalltau(x.flatten(), y.flatten()).correlation for x, y in combinations(snd_rdms, 2)]
+                list_cor_models.append(kendalltau(sym_matrix_to_vec(sub_rdm), sym_matrix_to_vec(model_rdm.as_matrix())).correlation)
+                rdms_dist = [kendalltau(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 #rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
-                list_cor_models.append(pearsonr(sub_rdm.flatten(), model_rdm.as_matrix().flatten())[0])
-                rdms_dist = [pearsonr(x.flatten(), y.flatten())[0] for x, y in combinations(snd_rdms, 2)]
+                list_cor_models.append(pearsonr(sym_matrix_to_vec(sub_rdm), sym_matrix_to_vec(model_rdm.as_matrix()))[0])
+                rdms_dist = [pearsonr(x, y)[0] for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-                rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
+                np.fill_diagonal(rdms_dist.values, 1)
+                rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
 
     model_comp['cor'] = list_cor_models
 
