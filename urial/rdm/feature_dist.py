@@ -1,17 +1,18 @@
 def feature_dist(path, prefix=None, dist=None, order=None):
     '''function to compute the distance between extracted
-        stimuli features within a given dictory'''
+        stimuli features within a given directory'''
 
     global dict_rdms
     global DefaultListOrderedDict
-    global feat_dist
+    global feat_dis_mat
 
     from glob import glob
     import pandas as pd
     from collections import OrderedDict
     from scipy.spatial import distance
-    from scipy.stats import spearmanr, kendalltau, pearsonr
+    from scipy.stats import spearmanr, pearsonr
     from itertools import combinations
+    import numpy as np
 
     if prefix is None:
         list_features = glob(path + '*.csv')
@@ -76,31 +77,25 @@ def feature_dist(path, prefix=None, dist=None, order=None):
     features = dict_features['data']
     ids = dict_features['id']
 
-    if dist is None:
-        feat_dist = [distance.euclidean(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+    if dist is None or dist == 'euclidean':
+        feat_dis_mat = [distance.euclidean(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
                         combinations(features, 2)]
-        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
+        feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
     elif dist == 'correlation':
-        feat_dist = [distance.correlation(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+        feat_dis_mat = [distance.correlation(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
                         combinations(features, 2)]
-    elif dist == 'minkowski':
-        feat_dist = [distance.minkowskicorrelation(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
-                        combinations(features, 2)]
+        feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
     elif dist == 'spearman':
-        feat_dist = [spearmanr(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+        feat_dis_mat = [spearmanr(x.as_matrix().flatten(), y.as_matrix().flatten()).correlation for x, y in
                         combinations(features, 2)]
-        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
-        feat_dist = feat_dist.mask(feat_dist.values > 0, 1 - feat_dist.values)
+        feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
+        np.fill_diagonal(feat_dis_mat.values, 1)
+        feat_dis_mat = feat_dis_mat.mask(feat_dis_mat.values > -1.05, 1 - feat_dis_mat.values)
     elif dist == 'pearson':
-        feat_dist = [pearsonr(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+        feat_dis_mat = [pearsonr(x.as_matrix().flatten(), y.as_matrix().flatten())[0] for x, y in
                         combinations(features, 2)]
-        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
-        feat_dist = feat_dist.mask(feat_dist.values > 0, 1 - feat_dist.values)
-    elif dist == 'kendalltau':
-        feat_dist = [kendalltau(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
-                        combinations(features, 2)]
-        feat_dist = pd.DataFrame(distance.squareform(feat_dist), columns=ids)
-        feat_dist = feat_dist.mask(feat_dist.values > 0, 1 - feat_dist.values)
+        feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
+        np.fill_diagonal(feat_dis_mat.values, 1)
+        feat_dis_mat = feat_dis_mat.mask(feat_dis_mat.values > -1.05, 1 - feat_dis_mat.values)
 
-
-    return feat_dist
+    return feat_dis_mat
