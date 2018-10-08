@@ -1,5 +1,5 @@
 def gen_model_rdm(model, cond, columns=None, name=None, path=None):
-    '''function to generate model RDMs, more preciseley
+    '''function to generate model RDMs, more precisely
         hypothesis based conceptual models'''
 
     import pandas as pd
