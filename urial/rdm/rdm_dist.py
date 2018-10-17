@@ -2,7 +2,7 @@ def rdm_dist(rdms, comp=None, order=None):
     '''function to compute distances between all
         RDMs in a given dictionary'''
 
-    global DefaultListOrderedDict
+    #global DefaultListOrderedDict
     from collections import OrderedDict
 
     class DefaultListOrderedDict(OrderedDict):
@@ -47,18 +47,18 @@ def rdm_dist(rdms, comp=None, order=None):
     global rdms_dist
 
     if comp is None or comp == 'euclidean':
-        rdms_dist = [distance.euclidean(sym_matrix_to_vec(x.as_matrix()), sym_matrix_to_vec(y.as_matrix())) for x, y in combinations(rdms, 2)]
+        rdms_dist = [distance.euclidean(sym_matrix_to_vec(x.as_matrix(), discard_diagonal=True), sym_matrix_to_vec(y.as_matrix(), discard_diagonal=True)) for x, y in combinations(rdms, 2)]
         rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
     elif comp == 'spearman':
          for index, rdm in enumerate(rdms):
-             rdms[index] = rankdata(sym_matrix_to_vec(rdm.as_matrix()))
+             rdms[index] = rankdata(sym_matrix_to_vec(rdm.as_matrix(), discard_diagonal=True))
          rdms_dist = [spearmanr(x, y).correlation for x, y in combinations(rdms, 2)]
          rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
          np.fill_diagonal(rdms_dist.values, 1)
          rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, rdm in enumerate(rdms):
-                rdms[index] = mstats.zscore(sym_matrix_to_vec(rdm.as_matrix()))
+                rdms[index] = mstats.zscore(sym_matrix_to_vec(rdm.as_matrix(), discard_diagonal=True))
         rdms_dist = [pearsonr(x, y)[0] for x, y in combinations(rdms, 2)]
         rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
         np.fill_diagonal(rdms_dist.values, 1)

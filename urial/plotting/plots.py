@@ -149,3 +149,44 @@ def plot_mds(rdm):
 
     plt.tight_layout()
     plt.show()
+
+def plot_model_fit(model_comp, plot=None, comp=None):
+    '''function to visualize RDM model fit'''
+
+    # read in the rdm in .csv format, creating a data frame
+    if isinstance(model_comp, str) is True:
+        df = pd.read_csv(model_comp)
+        if 'Unnamed: 0' in rdm:
+            del rdm['Unnamed: 0']
+    else:
+        model_comp = model_comp
+
+    # set plot parameter
+    if plot is None or plot=='bar':
+        ax = sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
+        plt.plot(np.linspace(0, 1, 1000), [model_comp['upper_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [model_comp['lower_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
+        rect = plt.Rectangle((-20, model_comp['lower_noise_ceiling'][0]), 10000, (model_comp['upper_noise_ceiling'][0] - model_comp['lower_noise_ceiling'][0]), color='r',
+                             alpha=0.5)
+        if comp is None or comp == 'spearman':
+            ax.set(ylabel='spearman correlation with target RDM')
+        if comp == 'pearson':
+            ax.set(ylabel='pearson correlation with target RDM')
+        if comp == 'kendalltaua':
+            ax.set(ylabel='kendall tau a correlation with target RDM')
+        ax.add_patch(rect)
+        plt.tight_layout()
+    elif plot == 'violin':
+        ax = sns.violinplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
+        plt.plot(np.linspace(0, 1, 1000), [model_comp['upper_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [model_comp['lower_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
+        rect = plt.Rectangle((-20, model_comp['lower_noise_ceiling'][0]), 10000, (model_comp['upper_noise_ceiling'][0] - model_comp['lower_noise_ceiling'][0]), color='r',
+                             alpha=0.5)
+        if comp is None or comp == 'spearman':
+            ax.set(ylabel='spearman correlation with target RDM')
+        if comp == 'pearson':
+            ax.set(ylabel='pearson correlation with target RDM')
+        if comp == 'kendalltaua':
+            ax.set(ylabel='kendall tau a correlation with target RDM')
+        ax.add_patch(rect)
+        plt.tight_layout()
