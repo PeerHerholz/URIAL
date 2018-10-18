@@ -151,14 +151,13 @@ def rdm_compare(rdms, models, comp=None, plot=None):
                 rdms_dist = [spearmanr(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 np.fill_diagonal(rdms_dist.values, 1)
-                rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
     elif comp == 'kendalltaua':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
                 list_cor_models.append(kendalltau(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), rankdata(sym_matrix_to_vec(model_rdm.as_matrix(), discard_diagonal=True))).correlation)
                 rdms_dist = [kendalltau(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-                #rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
+                np.fill_diagonal(rdms_dist.values, 1)
     elif comp == 'pearson':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
@@ -166,7 +165,6 @@ def rdm_compare(rdms, models, comp=None, plot=None):
                 rdms_dist = [pearsonr(x, y)[0] for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 np.fill_diagonal(rdms_dist.values, 1)
-                rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
 
     model_comp['cor'] = list_cor_models
     model_comp['upper_noise_ceiling'] = upper_noise_ceiling

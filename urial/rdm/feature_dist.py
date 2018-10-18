@@ -85,6 +85,8 @@ def feature_dist(path, prefix=None, dist=None, order=None):
         feat_dis_mat = [distance.correlation(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
                         combinations(features, 2)]
         feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
+        np.fill_diagonal(feat_dis_mat.values, 1)
+        feat_dis_mat = feat_dis_mat.mask(feat_dis_mat.values > -1.05, 1 - feat_dis_mat.values)
     elif dist == 'spearman':
         feat_dis_mat = [spearmanr(x.as_matrix().flatten(), y.as_matrix().flatten()).correlation for x, y in
                         combinations(features, 2)]

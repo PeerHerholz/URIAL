@@ -1,4 +1,4 @@
-def plot_rdm(rdm, mat=False, model=False, cmap="Spectral_r"):
+def plot_rdm(rdm, mat=False, model=False, level=None, comp=None, cmap="Spectral_r"):
     '''
     function to visualize RDM based rank transformed and scaled similarity values
     (only for plotting, raw/initial values remain unchanged)
@@ -26,7 +26,25 @@ def plot_rdm(rdm, mat=False, model=False, cmap="Spectral_r"):
     categories = list(rdm.columns)
     y_categories = list(categories)
 
-    if model is False:
+    if model is False and level == '2nd':
+
+        ax = sns.heatmap(rdm, xticklabels=categories, yticklabels=y_categories, cmap=cmap, vmin=-1, vmax=1)
+        ax.set_yticklabels(y_categories, rotation=0)
+        ax.xaxis.tick_top()
+        ax.set_xticklabels(categories, rotation=90)
+        if comp is None:
+            ax.collections[0].colorbar.set_label("correlations between RDMs")
+        if comp == 'kendalltaua':
+            ax.collections[0].colorbar.set_label("correlations between RDMs [kendall tau]")
+        if comp == 'spearman':
+            ax.collections[0].colorbar.set_label("correlations between RDMs [spearman]")
+        if comp == 'pearson':
+            ax.collections[0].colorbar.set_label("correlations between RDMs [pearson]")
+        plt.tight_layout()
+
+
+
+    if model is False and level is None:
 
         rdm = rdm.as_matrix()
 
@@ -63,7 +81,10 @@ def plot_rdm(rdm, mat=False, model=False, cmap="Spectral_r"):
         ax.collections[0].colorbar.set_label("pairwise similarities, scaled [0,1]")
         plt.tight_layout()
 
-def plot_mds(rdm):
+
+
+
+def plot_mds(rdm, level=None):
     '''function to visualize RDM via multidimensional scaling'''
 
     # big kudos to Jona Sassenhagen for doing an amazing job
@@ -89,6 +110,9 @@ def plot_mds(rdm):
         df=rdm
 
     df.index = df.columns  # set data frame index based on columns
+
+    if level == '2nd':
+        df= df.mask(df.values > -1.05, 1 - df.values)
 
     # set seed for mds
     seed = 0
@@ -149,6 +173,33 @@ def plot_mds(rdm):
 
     plt.tight_layout()
     plt.show()
+
+
+def plot_dendrogram(rdm, co_th=None):
+    '''function to visualize RDM as dendrogram'''
+
+    import pandas as pd
+    from scipy.cluster.hierarchy import dendrogram, linkage
+
+    # read in the rdm in .csv format, creating a data frame
+    if isinstance(rdm, str) is True:
+        df = pd.read_csv(rdm)
+        if 'Unnamed: 0' in rdm:
+            del rdm['Unnamed: 0']
+    else:
+        rdm = rdm
+
+    data_den = linkage(rdm, 'ward')
+
+    if co_th is not None:
+        co_th = co_th
+    elif co_th is None:
+        co_th = 'default'
+
+    # Make the dendro
+    dendrogram(data_den, labels=rdm.columns, leaf_rotation=0, orientation="left", color_threshold=co_th,
+               above_threshold_color='grey')
+
 
 def plot_model_fit(model_comp, plot=None, comp=None):
     '''function to visualize RDM model fit'''
