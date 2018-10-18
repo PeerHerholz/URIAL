@@ -22,7 +22,7 @@ Running into any bugs :beetle:? Check out the [open issues](https://github.com/P
 Thank you for considering contributing to our project! Before getting involved, please review our [Code of Conduct](https://github.com/PeerHerholz/URIAL/blob/master/CODE_OF_CONDUCT.md). Next, you can review  [open issues](https://github.com/PeerHerholz/URIAL/issues) that we are looking for help with. If you submit a new pull request please be as detailed as possible in your comments. Please also have a look at our [contribution guidelines](https://github.com/PeerHerholz/URIAL/blob/master/CONTRIBUTING.md).
 
 ### Acknowledgements
-If you intend to or already used ANSL, we would be very happy if you cite this github repo, till we have "something" out there!
+If you intend to or already used URIAL, we would be very happy if you cite this github repo, till we have "something" out there!
 
 
 <sub></sup>Please feel free to contact me wrt any question or idea via mail (herholz dot peer at gmail dot com), twitter ([@peerherholz](https://twitter.com/peerherholz?lang=eng)) or the brainhack slack team (@peerherholz). <sup><sub>
