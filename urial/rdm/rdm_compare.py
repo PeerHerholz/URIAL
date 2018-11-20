@@ -127,7 +127,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     upper_noise_ceiling = np.mean(list_cor_rdm)
     lower_noise_ceiling = np.mean(list_cor_rdm_sub)
 
-    model_comp = pd.DataFrame(columns=['participant', 'models', 'cor', 'upper_noise_ceiling', 'lower_noise_ceiling'],
+    model_comp = pd.DataFrame(columns=['participant', 'models', 'cor'],
                               index=np.arange(len(dict_models['id']) * len(dict_rdms['id'])))
     model_comp['participant'] = dict_rdms['id'] * len(dict_models['id'])
     model_comp['models'] = sorted(dict_models['id'] * len(dict_rdms['id']))
@@ -151,13 +151,14 @@ def rdm_compare(rdms, models, comp=None, plot=None):
                 rdms_dist = [spearmanr(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 np.fill_diagonal(rdms_dist.values, 1)
+                rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
     elif comp == 'kendalltaua':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
                 list_cor_models.append(kendalltau(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), rankdata(sym_matrix_to_vec(model_rdm.as_matrix(), discard_diagonal=True))).correlation)
                 rdms_dist = [kendalltau(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
-                np.fill_diagonal(rdms_dist.values, 1)
+                #rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
@@ -165,20 +166,19 @@ def rdm_compare(rdms, models, comp=None, plot=None):
                 rdms_dist = [pearsonr(x, y)[0] for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 np.fill_diagonal(rdms_dist.values, 1)
+                rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
 
     model_comp['cor'] = list_cor_models
     model_comp['upper_noise_ceiling'] = upper_noise_ceiling
-    model_comp['lower_noise_ceiling'] = lower_noise_ceiling
-
+    model_comp['lower_noise_ceiling'] = lower_noise_ceiling  
 
     if plot is None:
         print('results will not be plotted')
     elif plot == 'bar':
         ax = sns.barplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
-        plt.plot(np.linspace(0, 1, 1000), [model_comp['upper_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
-        plt.plot(np.linspace(0, 1, 1000), [model_comp['lower_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
-        rect = plt.Rectangle((-20, model_comp['lower_noise_ceiling'][0]), 10000,
-                             (model_comp['upper_noise_ceiling'][0] - model_comp['lower_noise_ceiling'][0]), color='r',
+        plt.plot(np.linspace(0, 1, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
+        rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         if comp is None or comp == 'spearman':
             ax.set(ylabel='spearman correlation with target RDM')
@@ -190,10 +190,9 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         plt.tight_layout()
     elif plot == 'violin':
         ax = sns.violinplot(x=model_comp['models'], y=model_comp['cor'], data=model_comp)
-        plt.plot(np.linspace(0, 1, 1000), [model_comp['upper_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
-        plt.plot(np.linspace(0, 1, 1000), [model_comp['lower_noise_ceiling'][0]] * 1000, 'r', alpha=0.1)
-        rect = plt.Rectangle((-20, model_comp['lower_noise_ceiling'][0]), 10000,
-                             (model_comp['upper_noise_ceiling'][0] - model_comp['lower_noise_ceiling'][0]), color='r',
+        plt.plot(np.linspace(0, 1, 1000), [upper_noise_ceiling] * 1000, 'r', alpha=0.1)
+        plt.plot(np.linspace(0, 1, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
+        rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
         if comp is None or comp == 'spearman':
             ax.set(ylabel='spearman correlation with target RDM')

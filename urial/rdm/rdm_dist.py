@@ -14,7 +14,7 @@ def rdm_dist(rdms, comp=None, order=None):
     from collections import OrderedDict
     import pickle
     from scipy.spatial import distance
-    from scipy.stats import pearsonr, spearmanr, rankdata, mstats, kendalltau
+    from scipy.stats import pearsonr, spearmanr, rankdata, mstats
     from itertools import combinations
     from nilearn.connectome import sym_matrix_to_vec
     import numpy as np
@@ -55,17 +55,13 @@ def rdm_dist(rdms, comp=None, order=None):
          rdms_dist = [spearmanr(x, y).correlation for x, y in combinations(rdms, 2)]
          rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
          np.fill_diagonal(rdms_dist.values, 1)
+         rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, rdm in enumerate(rdms):
                 rdms[index] = mstats.zscore(sym_matrix_to_vec(rdm.as_matrix(), discard_diagonal=True))
         rdms_dist = [pearsonr(x, y)[0] for x, y in combinations(rdms, 2)]
         rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
         np.fill_diagonal(rdms_dist.values, 1)
-    elif comp == 'kendalltaua':
-        for index, rdm in enumerate(rdms):
-            rdms[index] = rankdata(sym_matrix_to_vec(rdm.as_matrix(), discard_diagonal=True))
-        rdms_dist = [kendalltau(x, y).correlation for x, y in combinations(rdms, 2)]
-        rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
-        np.fill_diagonal(rdms_dist.values, 1)
+        rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
 
     return rdms_dist
