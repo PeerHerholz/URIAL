@@ -78,21 +78,21 @@ def feature_dist(path, prefix=None, dist=None, order=None):
     ids = dict_features['id']
 
     if dist is None or dist == 'euclidean':
-        feat_dis_mat = [distance.euclidean(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+        feat_dis_mat = [distance.euclidean(x.values().flatten(), y.values().flatten()) for x, y in
                         combinations(features, 2)]
         feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
     elif dist == 'correlation':
-        feat_dis_mat = [distance.correlation(x.as_matrix().flatten(), y.as_matrix().flatten()) for x, y in
+        feat_dis_mat = [distance.correlation(x.values().flatten(), y.values().flatten()) for x, y in
                         combinations(features, 2)]
         feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
     elif dist == 'spearman':
-        feat_dis_mat = [spearmanr(x.as_matrix().flatten(), y.as_matrix().flatten()).correlation for x, y in
+        feat_dis_mat = [spearmanr(x.values().flatten(), y.values().flatten()).correlation for x, y in
                         combinations(features, 2)]
         feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
         np.fill_diagonal(feat_dis_mat.values, 1)
         feat_dis_mat = feat_dis_mat.mask(feat_dis_mat.values > -1.05, 1 - feat_dis_mat.values)
     elif dist == 'pearson':
-        feat_dis_mat = [pearsonr(x.as_matrix().flatten(), y.as_matrix().flatten())[0] for x, y in
+        feat_dis_mat = [pearsonr(x.values().flatten(), y.values().flatten())[0] for x, y in
                         combinations(features, 2)]
         feat_dis_mat = pd.DataFrame(distance.squareform(feat_dis_mat), columns=ids)
         np.fill_diagonal(feat_dis_mat.values, 1)

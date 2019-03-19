@@ -49,7 +49,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             del rdm['Unnamed: 0']
 
     for index, rdm in enumerate(target_rdms):
-        target_rdms[index] = target_rdms[index].as_matrix()
+        target_rdms[index] = target_rdms[index].values()
 
     list_cor_rdm = list(range(0, len(target_rdms)))
     list_p = list(range(0, len(target_rdms)))
@@ -61,7 +61,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms_trans):
-            list_cor_rdm[index], list_p[index] = spearmanr(sym_matrix_to_vec(part_rdm, discard_diagonal=True), sym_matrix_to_vec(rdm_avg.as_matrix(), discard_diagonal=True))
+            list_cor_rdm[index], list_p[index] = spearmanr(sym_matrix_to_vec(part_rdm, discard_diagonal=True), sym_matrix_to_vec(rdm_avg.values(), discard_diagonal=True))
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -84,7 +84,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             rdm_avg = pd.DataFrame(np.mean(target_rdms, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms):
-            list_cor_rdm[index], list_p[index] = kendalltau(sym_matrix_to_vec(part_rdm, discard_diagonal=True), sym_matrix_to_vec(rdm_avg.as_matrix(), discard_diagonal=True))
+            list_cor_rdm[index], list_p[index] = kendalltau(sym_matrix_to_vec(part_rdm, discard_diagonal=True), sym_matrix_to_vec(rdm_avg.values(), discard_diagonal=True))
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -107,7 +107,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
             rdm_avg = pd.DataFrame(np.mean(target_rdms_trans, axis=0), columns=target_conds)
 
         for index, part_rdm in enumerate(target_rdms_trans):
-            list_cor_rdm[index], list_p[index] = pearsonr(sym_matrix_to_vec(part_rdm, discard_diagonal=True), sym_matrix_to_vec(rdm_avg.as_matrix(), discard_diagonal=True))
+            list_cor_rdm[index], list_p[index] = pearsonr(sym_matrix_to_vec(part_rdm, discard_diagonal=True), sym_matrix_to_vec(rdm_avg.values(), discard_diagonal=True))
 
         list_cor_sub = list()
         list_cor_rdm_sub = list()
@@ -135,9 +135,9 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     list_cor_models = list()
 
     snd_rdms = list()
-    snd_rdms.append(sym_matrix_to_vec(rdm_avg.as_matrix(), discard_diagonal=True))
+    snd_rdms.append(sym_matrix_to_vec(rdm_avg.values(), discard_diagonal=True))
     for mod_rdm in models:
-        snd_rdms.append(sym_matrix_to_vec(mod_rdm.as_matrix(), discard_diagonal=True))
+        snd_rdms.append(sym_matrix_to_vec(mod_rdm.values(), discard_diagonal=True))
 
     ids_rdms = list()
     ids_rdms.append('group average')
@@ -147,7 +147,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     if comp is None or comp == 'spearman':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
-                list_cor_models.append(spearmanr(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), sym_matrix_to_vec(model_rdm.as_matrix(), discard_diagonal=True)).correlation)
+                list_cor_models.append(spearmanr(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), sym_matrix_to_vec(model_rdm.values(), discard_diagonal=True)).correlation)
                 rdms_dist = [spearmanr(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 np.fill_diagonal(rdms_dist.values, 1)
@@ -155,14 +155,14 @@ def rdm_compare(rdms, models, comp=None, plot=None):
     elif comp == 'kendalltaua':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
-                list_cor_models.append(kendalltau(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), rankdata(sym_matrix_to_vec(model_rdm.as_matrix(), discard_diagonal=True))).correlation)
+                list_cor_models.append(kendalltau(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), rankdata(sym_matrix_to_vec(model_rdm.values(), discard_diagonal=True))).correlation)
                 rdms_dist = [kendalltau(x, y).correlation for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 #rdms_dist = rdms_dist.mask(rdms_dist.values > 0, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, model_rdm in enumerate(dict_models['rdm']):
             for i, sub_rdm in enumerate(target_rdms_trans):
-                list_cor_models.append(pearsonr(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), sym_matrix_to_vec(model_rdm.as_matrix(), discard_diagonal=True))[0])
+                list_cor_models.append(pearsonr(sym_matrix_to_vec(sub_rdm, discard_diagonal=True), sym_matrix_to_vec(model_rdm.values(), discard_diagonal=True))[0])
                 rdms_dist = [pearsonr(x, y)[0] for x, y in combinations(snd_rdms, 2)]
                 rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids_rdms)
                 np.fill_diagonal(rdms_dist.values, 1)
@@ -170,7 +170,10 @@ def rdm_compare(rdms, models, comp=None, plot=None):
 
     model_comp['cor'] = list_cor_models
     model_comp['upper_noise_ceiling'] = upper_noise_ceiling
-    model_comp['lower_noise_ceiling'] = lower_noise_ceiling  
+    model_comp['lower_noise_ceiling'] = lower_noise_ceiling
+
+    sns.set_style('darkgrid')
+    sns.set_context('paper')
 
     if plot is None:
         print('results will not be plotted')
@@ -180,6 +183,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         plt.plot(np.linspace(0, 1, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
         if comp is None or comp == 'spearman':
             ax.set(ylabel='spearman correlation with target RDM')
         if comp == 'pearson':
@@ -194,6 +198,7 @@ def rdm_compare(rdms, models, comp=None, plot=None):
         plt.plot(np.linspace(0, 1, 1000), [lower_noise_ceiling] * 1000, 'r', alpha=0.1)
         rect = plt.Rectangle((-20, lower_noise_ceiling), 10000, (upper_noise_ceiling - lower_noise_ceiling), color='r',
                              alpha=0.5)
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
         if comp is None or comp == 'spearman':
             ax.set(ylabel='spearman correlation with target RDM')
         if comp == 'pearson':
