@@ -26,7 +26,7 @@ def rdm_avg(rdms):
     conds = rdms[0].keys()
 
     for index, rdm in enumerate(rdms):
-        rdms[index] = rdms[index].values()
+        rdms[index] = rdms[index].to_numpy()
 
     global avg_rdm
 

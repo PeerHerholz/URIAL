@@ -46,7 +46,7 @@ def plot_rdm(rdm, mat=False, model=False, level=None, comp=None, cmap="Spectral_
 
     if model is False and level is None:
 
-        rdm = rdm.values()
+        rdm = rdm.to_numpy()
 
         rdm_vec = sym_matrix_to_vec(rdm)
         rdm_vec = rankdata(rdm_vec)
@@ -65,7 +65,7 @@ def plot_rdm(rdm, mat=False, model=False, level=None, comp=None, cmap="Spectral_
 
     if model is True:
 
-        rdm = rdm.values()
+        rdm = rdm.to_numpy()
 
         rdm_vec = sym_matrix_to_vec(rdm)
 
@@ -138,7 +138,7 @@ def plot_mds(rdm, level=None):
     rdm[np.isinf(rdm)] = 0
 
     # convert rdm data frame to array
-    rdm = rdm.values()
+    rdm = rdm.to_numpy()
 
     # apply pca to mds
     rdm_mds_pca = clf.fit_transform(rdm_mds)

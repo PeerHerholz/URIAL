@@ -47,7 +47,7 @@ def rdm_dist(rdms, comp=None, order=None):
     global rdms_dist
 
     if comp is None or comp == 'euclidean':
-        rdms_dist = [distance.euclidean(sym_matrix_to_vec(x.values(), discard_diagonal=True), sym_matrix_to_vec(y.values(), discard_diagonal=True)) for x, y in combinations(rdms, 2)]
+        rdms_dist = [distance.euclidean(sym_matrix_to_vec(x.to_numpy(), discard_diagonal=True), sym_matrix_to_vec(y.to_numpy(), discard_diagonal=True)) for x, y in combinations(rdms, 2)]
         rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
     elif comp == 'spearman':
         for index, rdm in enumerate(rdms):
@@ -58,7 +58,7 @@ def rdm_dist(rdms, comp=None, order=None):
             #rdms_dist = rdms_dist.mask(rdms_dist.values > -1.05, 1 - rdms_dist.values)
     elif comp == 'pearson':
         for index, rdm in enumerate(rdms):
-            rdms[index] = mstats.zscore(sym_matrix_to_vec(rdm.values(), discard_diagonal=True))
+            rdms[index] = mstats.zscore(sym_matrix_to_vec(rdm.to_numpy(), discard_diagonal=True))
         rdms_dist = [pearsonr(x, y)[0] for x, y in combinations(rdms, 2)]
         rdms_dist = pd.DataFrame(distance.squareform(rdms_dist), columns=ids)
         np.fill_diagonal(rdms_dist.values, 1)
