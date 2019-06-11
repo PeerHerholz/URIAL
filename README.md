@@ -2,7 +2,7 @@
      alt="URIAL logo"
      height="250"
      style="float: center; margin-right: 10px;"/>
-     
+
 [![GitHub issues](https://img.shields.io/github/issues/PeerHerholz/URIAL.svg)](https://github.com/PeerHerholz/URIAL/issues/)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/PeerHerholz/URIAL.svg)](https://github.com/PeerHerholz/URIAL/pulls/)
 [![GitHub contributors](https://img.shields.io/github/contributors/PeerHerholz/URIAL.svg)](https://GitHub.com/PeerHerholz/URIAL/graphs/contributors/)
@@ -37,4 +37,16 @@ As mentioned above, URIAL's is divided into three sections that include respecti
 - model comparison results
 - stability and correlation of RDMs across trials
 
-  
+
+
+## Documentation
+A documentation is currently in the works and will be available soon. Sorry for any inconvenience this might cause.   
+
+## How to report errors
+Running into any bugs :beetle:? Check out the [open issues](https://github.com/PeerHerholz/URIAL/issues) to see if we're already working on it. If not, open up a new issue and we will check it out when we can!
+
+## How to contribute
+Thank you for considering contributing to our project! Before getting involved, please review our [Code of Conduct](https://github.com/PeerHerholz/URIAL/blob/master/CODE_OF_CONDUCT.md). Next, you can review  [open issues](https://github.com/PeerHerholz/URIAL/issues) that we are looking for help with. If you submit a new pull request please be as detailed as possible in your comments. Please also have a look at our [contribution guidelines](https://github.com/PeerHerholz/URIAL/blob/master/CONTRIBUTING.md).
+
+### Acknowledgements
+If you intend to or already used ANSL, we would be very happy if you cite this github repo, till we have "something" out there!

@@ -1,6 +1,6 @@
 # Contributing to URIAL
 
-Welcome to the ANSL repository! We're excited you're here and want to contribute.  
+Welcome to the URIAL repository! We're excited you're here and want to contribute.  
 
 These guidelines are designed to make it as easy as possible to get involved. If you have any questions that aren't discussed below, please let us know by opening an [issue][https://github.com/PeerHerholz/URIAL]!
 
@@ -46,25 +46,25 @@ Already know what you're looking for in this guide? Jump to the following sectio
 
 ## Making a change
 
-We appreciate all contributions to BIDSonym, but those accepted fastest will follow a workflow similar to the following:
+We appreciate all contributions to URIAL, but those accepted fastest will follow a workflow similar to the following:
 
 **1. Comment on an existing issue or open a new issue referencing your addition.**
 
-This allows other members of the BIDSonym development team to confirm that you aren't overlapping with work that's currently underway and that everyone is on the same page with the goal of the work you're going to carry out.
+This allows other members of the URIAL development team to confirm that you aren't overlapping with work that's currently underway and that everyone is on the same page with the goal of the work you're going to carry out.
 
 [This blog][https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/] is a nice explanation of why putting this work in up front is so useful to everyone involved.
 
-**2. [Fork][https://help.github.com/articles/fork-a-repo/] the [BIDSonym repository][https://github.com/PeerHerholz/BIDSonym] to your profile.**
+**2. [Fork][https://help.github.com/articles/fork-a-repo/] the [URIAL repository][https://github.com/PeerHerholz/URIAL] to your profile.**
 
-This is now your own unique copy of the BIDSonym repository.
+This is now your own unique copy of the URIAL repository.
 Changes here won't affect anyone else's work, so it's a safe space to explore edits to the code!
 
-You can clone your BIDSonym repository in order to create a local copy of the code on your machine.
-To install your version of BIDSonym, and the dependencies needed for development,
-in your Python environment, run `pip install -e ".[dev]"` from your local BIDSonym
+You can clone your URIAL repository in order to create a local copy of the code on your machine.
+To install your version of URIAL, and the dependencies needed for development,
+in your Python environment, run `pip install -e ".[dev]"` from your local URIAL
 directory.
 
-Make sure to keep your fork up to date with the original BIDSonym repository.
+Make sure to keep your fork up to date with the original URIAL repository.
 One way to do this is to [configure a new remote named "upstream"](https://help.github.com/articles/configuring-a-remote-for-a-fork/)
  and to [sync your fork with the upstream repository][https://help.github.com/articles/syncing-a-fork/].
 
