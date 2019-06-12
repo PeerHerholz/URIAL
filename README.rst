@@ -1,7 +1,10 @@
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/PeerHerholz/URIAL/blob/master/img/URIAL_logo.png"
-     alt="URIAL logo"
-     height="250"
-     style="float: center; margin-right: 10px;"/>
+.. image:: urial/img/URIAL_logo.png
+   :height: 100px
+   :width: 200 px
+   :scale: 50 %
+   :alt: alternate text
+   :align: center
+
 
 [![GitHub issues](https://img.shields.io/github/issues/PeerHerholz/URIAL.svg)](https://github.com/PeerHerholz/URIAL/issues/)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/PeerHerholz/URIAL.svg)](https://github.com/PeerHerholz/URIAL/pulls/)
@@ -11,10 +14,8 @@
 [![GitHub HitCount](http://hits.dwyl.io/PeerHerholz/URIAL.svg)](http://hits.dwyl.io/PeerHerholz/URIAL)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
-
-
 ## Description
-URIAL is a toolbox (and hopefully soon BIDS app) for [representational similarity analysis](https://doi.org/10.3389/neuro.06.004.2008) in python. In more detail, it includes functions for computing, plotting and comparing Representational Dissimilarity Matrices (RDMs). It's based on the famous [matlab toolbox](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003553) ([github repo](https://github.com/rsagroup/rsatoolbox)), extending it with a variety of utility functions like the conversion from MATLAB (e.g., .mat) to open file types (e.g., .csv) and customizable graphics for both RDMs and MDS, as well as correlation of RDMs across trials. It heavily utilizes the following python libraries: [pandas](https://pandas.pydata.org/), [pingouin](https://github.com/raphaelvallat/pingouin), [scikit-learn](https://scikit-learn.org/), [nilearn](http://nilearn.github.io/index.html), [nistats](https://nistats.github.io/) & [MNE](https://martinos.org/mne/stable/index.html).  
+URIAL is a toolbox (and hopefully soon BIDS app) for [representational similarity analysis](https://doi.org/10.3389/neuro.06.004.2008) in python. In more detail, it includes functions for computing, plotting and comparing Representational Dissimilarity Matrices (RDMs). It's based on the famous [matlab toolbox](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003553) ([github repo](https://github.com/rsagroup/rsatoolbox)), extending it with a variety of utility functions like the conversion from MATLAB (e.g., .mat) to open file types (e.g., .csv) and customizable graphics for both RDMs and MDS, as well as correlation of RDMs across trials. It heavily utilizes the following python libraries: [pandas](https://pandas.pydata.org/), [pingouin](https://github.com/raphaelvallat/pingouin), [scikit-learn](https://scikit-learn.org/), [nilearn](http://nilearn.github.io/index.html), [nistats](https://nistats.github.io/) & [MNE](https://martinos.org/mne/stable/index.html).
 
 ## Overview of functionality
 
@@ -40,7 +41,7 @@ As mentioned above, URIAL's is divided into three sections that include respecti
 
 
 ## Documentation
-A documentation is currently in the works and will be available soon. Sorry for any inconvenience this might cause.   
+A documentation is currently in the works and will be available soon. Sorry for any inconvenience this might cause.
 
 ## How to report errors
 Running into any bugs :beetle:? Check out the [open issues](https://github.com/PeerHerholz/URIAL/issues) to see if we're already working on it. If not, open up a new issue and we will check it out when we can!

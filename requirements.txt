@@ -1,7 +1,6 @@
-pandas==0.20.3
-numpy==1.14.3
-seaborn==0.8
-nilearn==0.2.5
-matplotlib==2.0.2
-scipy==0.19.1
-scikit_learn==0.19.2
+# List required packages in this file, one per line.
+pandas
+seaborn
+nilearn
+nistats
+mne 

@@ -1,10 +1,10 @@
 # Contributing to URIAL
 
-Welcome to the URIAL repository! We're excited you're here and want to contribute.  
+Welcome to the URIAL repository! We're excited you're here and want to contribute.
 
-These guidelines are designed to make it as easy as possible to get involved. If you have any questions that aren't discussed below, please let us know by opening an [issue][https://github.com/PeerHerholz/URIAL]!
+These guidelines are designed to make it as easy as possible to get involved. If you have any questions that aren't discussed below, please let us know by opening an [issue](https://github.com/PeerHerholz/URIAL)!
 
-Before you start you'll need to set up a free [GitHub][https://github.com] account and sign in. Here are some [instructions][https://help.github.com/articles/signing-up-for-a-new-github-account/].
+Before you start you'll need to set up a free [GitHub](https://github.com) account and sign in. Here are some [instructions](https://help.github.com/articles/signing-up-for-a-new-github-account/).
 If you are not familiar with version control systems such as git,
  [introductions and tutorials](http://www.reproducibleimaging.org/module-reproducible-basics/02-vcs/)
  may be found on [ReproducibleImaging.org](https://www.reproducibleimaging.org).
@@ -18,7 +18,7 @@ Already know what you're looking for in this guide? Jump to the following sectio
 
 ## Issue labels
 
-* [![Bugs](https://img.shields.io/badge/-bugs-fc2929.svg)][link_bugs] *These issues point to problems in the project.*
+* [![Bugs](https://img.shields.io/badge/-bugs-fc2929.svg)] *These issues point to problems in the project.*
 
     If you find new a bug, please provide as much information as possible to recreate the error.
     The [issue template][link_issue_template] will automatically populate any new issue you open, and contains information we've found to be helpful in addressing bug reports.
@@ -26,17 +26,17 @@ Already know what you're looking for in this guide? Jump to the following sectio
 
     If you experience the same bug as one already listed in an open issue, please add any additional information that you have as a comment.
 
-* [![Help Wanted](https://img.shields.io/badge/-help%20wanted-c2e0c6.svg)][link_helpwanted] *These issues contain a task that a member of the team has determined we need additional help with.*
+* [![Help Wanted](https://img.shields.io/badge/-help%20wanted-c2e0c6.svg)] *These issues contain a task that a member of the team has determined we need additional help with.*
 
     If you feel that you can contribute to one of these issues, we especially encourage you to do so!
     Issues that are also labelled as [good-first-issue][link_good_first_issue] are a great place to start if you're looking to make your first contribution.
 
-* [![Enhancement](https://img.shields.io/badge/-enhancement-00FF09.svg)][link_enhancement] *These issues are asking for new features to be added to the project.*
+* [![Enhancement](https://img.shields.io/badge/-enhancement-00FF09.svg)] *These issues are asking for new features to be added to the project.*
 
     Please try to make sure that your requested enhancement is distinct from any others that have already been requested or implemented.
     If you find one that's similar but there are subtle differences, please reference the other request in your issue.
 
-* [![Orphaned](https://img.shields.io/badge/-orphaned-9baddd.svg)][link_orphaned] *These pull requests have been closed for inactivity.*
+* [![Orphaned](https://img.shields.io/badge/-orphaned-9baddd.svg)] *These pull requests have been closed for inactivity.*
 
     Before proposing a new pull request, browse through the "orphaned" pull requests.
     You may find that someone has already made significant progress toward your goal, and you can re-use their
@@ -52,9 +52,9 @@ We appreciate all contributions to URIAL, but those accepted fastest will follow
 
 This allows other members of the URIAL development team to confirm that you aren't overlapping with work that's currently underway and that everyone is on the same page with the goal of the work you're going to carry out.
 
-[This blog][https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/] is a nice explanation of why putting this work in up front is so useful to everyone involved.
+[This blog](https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/) is a nice explanation of why putting this work in up front is so useful to everyone involved.
 
-**2. [Fork][https://help.github.com/articles/fork-a-repo/] the [URIAL repository][https://github.com/PeerHerholz/URIAL] to your profile.**
+**2. [Fork](https://help.github.com/articles/fork-a-repo/) the [URIAL repository](https://github.com/PeerHerholz/URIAL) to your profile.**
 
 This is now your own unique copy of the URIAL repository.
 Changes here won't affect anyone else's work, so it's a safe space to explore edits to the code!
@@ -82,15 +82,15 @@ of the repository for a new set of changes.
 
 A new pull request for your changes should be created from your fork of the repository.
 
-When opening a pull request, please use one of the following prefixes:  
+When opening a pull request, please use one of the following prefixes:
 
 
-* **[ENH]** for enhancements  
-* **[FIX]** for bug fixes  
-* **[TST]** for new or updated tests  
-* **[DOC]** for new or updated documentation  
-* **[STY]** for stylistic changes  
-* **[REF]** for refactoring existing code    
+* **[ENH]** for enhancements
+* **[FIX]** for bug fixes
+* **[TST]** for new or updated tests
+* **[DOC]** for new or updated documentation
+* **[STY]** for stylistic changes
+* **[REF]** for refactoring existing code
 
 <br>
 Pull requests should be submitted early and often (please don't mix too many unrelated changes within one PR)!
@@ -125,8 +125,8 @@ The development team member who accepts/merges your pull request will update the
 
 ## Thank you!
 
-You're awesome. :wave::smiley:
+You're awesome.
 
 <br>
 
-*&mdash; Based on contributing guidelines from the [STEMMRoleModels][link_stemmrolemodels] project.*
+*&mdash; Based on contributing guidelines from the [STEMMRoleModels](http://stemmrolemodels.com/) project.*

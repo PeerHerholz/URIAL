@@ -1,31 +1,67 @@
-import os
+from os import path
+from setuptools import setup, find_packages
+import sys
+import versioneer
 
 
-def main():
-    from setuptools import setup, find_packages
+# NOTE: This file must remain Python 2 compatible for the foreseeable future,
+# to ensure that we error out properly for people with outdated setuptools
+# and/or pip.
+min_version = (3, 6)
+if sys.version_info < min_version:
+    error = """
+urial does not support Python {0}.{1}.
+Python {2}.{3} and above is required. Check your Python version like so:
 
-    # from nipype setup.py file
-    ldict = locals()
-    curr_path = os.path.dirname(__file__)
-    ver_file = os.path.join(curr_path, 'urial', 'info.py')
-    with open(ver_file) as infofile:
-        exec(infofile.read(), globals(), ldict)
+python3 --version
 
-    setup(
-        name=ldict['NAME'],
-        version=ldict['VERSION'],
-        description=ldict['DESCRIPTION'],
-        long_description=ldict['LONG_DESCRIPTION'],
-        maintainer=ldict['MAINTAINER'],
-        maintainer_email=ldict['EMAIL'],
-        url=ldict['URL'],
-        download_url=ldict['DOWNLOAD_URL'],
-        install_requires=ldict['INSTALL_REQUIRES'],
-        packages=find_packages(),
-        package_data=ldict['PACKAGE_DATA'],
-        license=ldict['LICENSE'],
-    )
+This may be due to an out-of-date pip. Make sure you have pip >= 9.0.1.
+Upgrade pip like so:
+
+pip install --upgrade pip
+""".format(*(sys.version_info[:2] + min_version))
+    sys.exit(error)
+
+here = path.abspath(path.dirname(__file__))
+
+with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
+    readme = readme_file.read()
+
+with open(path.join(here, 'requirements.txt')) as requirements_file:
+    # Parse requirements.txt, ignoring any commented-out lines.
+    requirements = [line for line in requirements_file.read().splitlines()
+                    if not line.startswith('#')]
 
 
-if __name__ == '__main__':
-    main()
+setup(
+    name='urial',
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
+    description="Utilities for Representational sImilarity AnalysIs in python",
+    long_description=readme,
+    author="Peer Herholz",
+    author_email='herholz.peer@gmail.com',
+    url='https://github.com/peerherholz/urial',
+    python_requires='>={}'.format('.'.join(str(n) for n in min_version)),
+    packages=find_packages(exclude=['docs', 'tests']),
+    entry_points={
+        'console_scripts': [
+            # 'command = some.module:some_function',
+            ],
+        },
+    include_package_data=True,
+    package_data={
+        'urial': [
+            # When adding files here, remember to update MANIFEST.in as well,
+            # or else they will not be included in the distribution on PyPI!
+            # 'path/to/data_file',
+            ]
+        },
+    install_requires=requirements,
+    license="BSD (3-clause)",
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+    ],
+)
