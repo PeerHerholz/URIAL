@@ -4,28 +4,6 @@
    :scale: 10 %
    :alt: alternate text
    :align: right
-
-.. image:: https://img.shields.io/github/issues/PeerHerholz/URIAL.svg
-    :alt: Issues
-    :target: https://github.com/PeerHerholz/URIAL/issues/
-
-.. image:: https://img.shields.io/github/issues-pr/PeerHerholz/URIAL.svg
-    :alt: PRs
-    :target: https://github.com/PeerHerholz/URIAL/pulls/
-
-.. image:: https://img.shields.io/github/contributors/PeerHerholz/URIAL.svg
-    :alt: Contributors
-    :target: https://GitHub.com/PeerHerholz/URIAL/graphs/contributors/
-
-.. image:: https://github-basic-badges.herokuapp.com/commits/PeerHerholz/URIAL.svg
-    :alt: Commits
-    :target: https://github.com/PeerHerholz/URIAL/commits/master
-
-.. image:: http://hits.dwyl.io/PeerHerholz/URIAL.svg
-    :alt: Hits
-    :target: http://hits.dwyl.io/PeerHerholz/URIAL
-
-=======
     
 .. image:: https://img.shields.io/github/issues-pr/PeerHerholz/URIAL.svg
     :alt: PRs
