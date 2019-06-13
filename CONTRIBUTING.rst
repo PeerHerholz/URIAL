@@ -23,7 +23,7 @@ Issue labels
 *These issues point to problems in the project.*
 
     If you find new a bug, please provide as much information as possible to recreate the error.
-    The [issue template][link_issue_template] will automatically populate any new issue you open, and contains information we've found to be helpful in addressing bug reports.
+    The `issue template <https://github.com/PeerHerholz/URIAL/blob/master/.github/ISSUE_TEMPLATE/bug_report.md>`_ will automatically populate any new issue you open, and contains information we've found to be helpful in addressing bug reports.
     Please fill it out to the best of your ability!
 
     If you experience the same bug as one already listed in an open issue, please add any additional information that you have as a comment.
