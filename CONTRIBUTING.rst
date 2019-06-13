@@ -10,11 +10,12 @@ If you are not familiar with version control systems such as git,
  may be found on `ReproducibleImaging.org <https://www.reproducibleimaging.org>`_.
 
 Already know what you're looking for in this guide? Jump to the following sections:
-* [Understanding issue labels](#issue-labels)
-* [Making a change](#making-a-change)
-* [How to tag pull requests](#tagging-pull-requests)
-* [Notes for new code](#notes-for-new-code)
-* [Recognizing contributions](#recognizing-contributions)
+
+- Understanding issue labels
+- Making a change
+- How to tag pull requests
+- Notes for new code
+- Recognizing contributions
 
 Issue labels
 ============
@@ -62,7 +63,7 @@ This allows other members of the URIAL development team to confirm that you aren
 
 `This blog <https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/>`_ is a nice explanation of why putting this work in up front is so useful to everyone involved.
 
-**2. `Fork <https://help.github.com/articles/fork-a-repo/>`_ the `URIAL repository <https://github.com/PeerHerholz/URIAL>`_ to your profile.**
+**2. Fork the URIAL repository to your profile.**
 
 This is now your own unique copy of the URIAL repository.
 Changes here won't affect anyone else's work, so it's a safe space to explore edits to the code!
@@ -86,7 +87,7 @@ It's a good practice to create `a new branch <https://help.github.com/articles/a
 of the repository for a new set of changes.
 
 
-**4. Submit a `pull request <https://help.github.com/en/articles/creating-a-pull-request>`_.**
+**4. Submit a pull request.**
 
 A new pull request for your changes should be created from your fork of the repository.
 
