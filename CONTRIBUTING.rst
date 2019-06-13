@@ -74,8 +74,7 @@ in your Python environment, run `pip install -e ".[dev]"` from your local URIAL
 directory.
 
 Make sure to keep your fork up to date with the original URIAL repository.
-One way to do this is to `configure a new remote named "upstream" <https://help.github.com/articles/configuring-a-remote-for-a-fork/>`_
- and to `sync your fork with the upstream repository <https://help.github.com/articles/syncing-a-fork/>`_.
+One way to do this is to `configure a new remote named "upstream" <https://help.github.com/articles/configuring-a-remote-for-a-fork/>`_ and to `sync your fork with the upstream repository <https://help.github.com/articles/syncing-a-fork/>`_.
 
 **3. Make the changes you've discussed.**
 
