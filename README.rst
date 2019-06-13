@@ -8,7 +8,6 @@
 .. image:: https://img.shields.io/github/issues/PeerHerholz/URIAL.svg
     :alt: Issues
     :target: https://github.com/PeerHerholz/URIAL/issues/
-<<<<<<< HEAD
 
 .. image:: https://img.shields.io/github/issues-pr/PeerHerholz/URIAL.svg
     :alt: PRs
@@ -44,7 +43,6 @@
     :alt: Hits
     :target: http://hits.dwyl.io/PeerHerholz/URIAL
     
->>>>>>> 079d0310ad2b13f2c1c324dc06487e79a51ddf9f
 .. image:: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
     :alt: License
     :target: https://opensource.org/licenses/BSD-3-Clause
@@ -52,7 +50,6 @@
 Description
 ===========
 URIAL is a toolbox (and hopefully soon BIDS app) for `representational similarity analysis <https://doi.org/10.3389/neuro.06.004.2008>`_ in python. In more detail, it includes functions for computing, plotting and comparing Representational Dissimilarity Matrices (RDMs). It's based on the famous `matlab toolbox <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003553>`_ (`github repo <https://github.com/rsagroup/rsatoolbox>`_), extending it with a variety of utility functions like the conversion from MATLAB (e.g., .mat) to open file types (e.g., .csv) and customizable graphics for both RDMs and MDS, as well as correlation of RDMs across trials. It heavily utilizes the following python libraries: `pandas <https://pandas.pydata.org/>`_, `pingouin <https://github.com/raphaelvallat/pingouin>`_, `scikit-learn <https://scikit-learn.org/>`_, `nilearn <http://nilearn.github.io/index.html>`_, `nistats <https://nistats.github.io/>`_ & `MNE <https://martinos.org/mne/stable/index.html>`_.
-<<<<<<< HEAD
 
 Overview of functionality
 =========================
@@ -64,7 +61,6 @@ Overview of functionality
 =========================
 As mentioned above, URIAL's is divided into three sections that include respective functions:
 
->>>>>>> 079d0310ad2b13f2c1c324dc06487e79a51ddf9f
 Computing
 _________
 - computation of RDMs from neuroimaging data, including fMRI (within ROIs) & EEG (across time)
