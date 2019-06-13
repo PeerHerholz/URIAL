@@ -3,7 +3,7 @@
    :width: 20 px
    :scale: 10 %
    :alt: alternate text
-   :align: center
+   :align: middle
 
 .. image:: https://img.shields.io/github/issues/PeerHerholz/URIAL.svg
     :alt: Issues
@@ -62,7 +62,7 @@ A documentation is currently in the works and will be available soon. Sorry for 
 
 How to report errors
 ____________________
-Running into any bugs :beetle:? Check out the [open issues](https://github.com/PeerHerholz/URIAL/issues) to see if we're already working on it. If not, open up a new issue and we will check it out when we can!
+Running into any bugs :beetle:? Check out the `open issues <https://github.com/PeerHerholz/URIAL/issues>`_ to see if we're already working on it. If not, open up a new issue and we will check it out when we can!
 
 How to contribute
 _________________
