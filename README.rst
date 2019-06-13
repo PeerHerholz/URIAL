@@ -3,7 +3,7 @@
    :width: 20 px
    :scale: 10 %
    :alt: alternate text
-   :align: middle
+   :align: right
 
 .. image:: https://img.shields.io/github/issues/PeerHerholz/URIAL.svg
     :alt: Issues
