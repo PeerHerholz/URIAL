@@ -1,5 +1,6 @@
 # List required packages in this file, one per line.
 pandas
+json
 seaborn
 nilearn
 nistats

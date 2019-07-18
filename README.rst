@@ -4,23 +4,23 @@
    :scale: 10 %
    :alt: alternate text
    :align: right
-    
+
 .. image:: https://img.shields.io/github/issues-pr/PeerHerholz/URIAL.svg
     :alt: PRs
     :target: https://github.com/PeerHerholz/URIAL/pulls/
- 
+
 .. image:: https://img.shields.io/github/contributors/PeerHerholz/URIAL.svg
     :alt: Contributors
     :target: https://GitHub.com/PeerHerholz/URIAL/graphs/contributors/
-    
+
 .. image:: https://github-basic-badges.herokuapp.com/commits/PeerHerholz/URIAL.svg
     :alt: Commits
     :target: https://github.com/PeerHerholz/URIAL/commits/master
-    
+
 .. image:: http://hits.dwyl.io/PeerHerholz/URIAL.svg
     :alt: Hits
     :target: http://hits.dwyl.io/PeerHerholz/URIAL
-    
+
 .. image:: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
     :alt: License
     :target: https://opensource.org/licenses/BSD-3-Clause
@@ -68,7 +68,7 @@ Running into any bugs :beetle:? Check out the `open issues <https://github.com/P
 
 How to contribute
 _________________
-Thank you for considering contributing to our project! Before getting involved, please review our `Code of Conduct <https://github.com/PeerHerholz/URIAL/blob/master/CODE_OF_CONDUCT.md>`_. Next, you can review `open issues <https://github.com/PeerHerholz/URIAL/issues>`_ that we are looking for help with. If you submit a new pull request please be as detailed as possible in your comments. Please also have a look at our `contribution guidelines <https://github.com/PeerHerholz/URIAL/blob/master/CONTRIBUTING.md>`_.
+Thank you for considering contributing to our project! Before getting involved, please review our `Code of Conduct <https://github.com/PeerHerholz/URIAL/blob/master/CODE_OF_CONDUCT.rst>`_. Next, you can review `open issues <https://github.com/PeerHerholz/URIAL/issues>`_ that we are looking for help with. If you submit a new pull request please be as detailed as possible in your comments. Please also have a look at our `contribution guidelines <https://github.com/PeerHerholz/URIAL/blob/master/CONTRIBUTING.rst>`_.
 
 Acknowledgements
 ================

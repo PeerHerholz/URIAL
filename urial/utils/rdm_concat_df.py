@@ -1,66 +1,50 @@
-def rdm_concat_df(path, outfile=None, prefix=None, addata=None, columns=None):
+def rdm_concat_df(rdm_list=None, sub_ids=None, outfile=None, prefix=None):
     '''function to create an dictionary containing
         all RDMs from a given dictory'''
 
-    global dict_rdms
-    global DefaultListOrderedDict
-
-    import sys
     from glob import glob
     import pandas as pd
-    from collections import OrderedDict
-    import pickle
+    import json
 
-    if prefix is None:
-        list_rdms=glob(path + '*.csv')
-    else:
-        list_rdms=glob(path + prefix + '*.csv')
-
-    class DefaultListOrderedDict(OrderedDict):
-        def __missing__(self,k):
-            self[k] = []
-            return self[k]
-
-    keys=['id','rdm']
-
-    id = []
+    ids = []
     rdms =[]
 
-    for file in list_rdms:
-        id.append(file[(file.rfind('/') + 1):file.rfind('.')])
-        rdms.append(pd.read_csv(file))
+    if isinstance(rdm_list, str) is False:
+            if sub_ids is None:
+                print('Please provide a list of subject identifiers that corresponds to the list of RDMs you indicated.')
+            elif len(sub_ids) != len(rdm_list):
+                print('The lengths of the RDM and subject identifier lists do not match, please check again.')
+            elif len(sub_ids) == len(rdm_list):
+                print('You provided the following subject identifiers:')
+                print(*sub_ids, sep="\n")
+                ids = sub_ids
+                rdms = rdm_list
+    elif isinstance(rdm_list, str) is True:
+            if prefix is None:
+                list_rdms=glob(rdm_list + '*.csv')
+            else:
+                list_rdms=glob(rdm_list + prefix + '*.csv')
 
-    global dict_rdms
+            for file in list_rdms:
+                ids.append(file[(file.rfind('/') + 1):file.rfind('.')])
+                rdms.append(pd.read_csv(file))
 
-    dict_rdms = DefaultListOrderedDict()
+    dict_rdms = {}
 
-    for key in keys:
-        for id_rdm in enumerate(id):
-            if key == 'id':
-                dict_rdms[key].append(id[id_rdm[0]])
-            elif key == 'rdm':
-                dict_rdms[key].append(rdms[id_rdm[0]])
-
-    if addata is None:
-        print('no additional data added')
-    else:
-        if columns is None:
-            sys.exit('adding additional data requires the definition of columns to include as additional data')
-        else:
-            addata_df=pd.read_csv(addata)
-            addata_df=addata_df[columns]
-            for value in addata_df:
-                for index, row_value in addata_df.iterrows():
-                    dict_rdms[value].append(row_value[value])
+    for ind, id in enumerate(ids):
+        dict_rdms[str(id)] = rdms[ind]
 
     if outfile is None:
-        print('outputfile is saved as `rdm.pkl` in your current directory')
-        pkl_rdm = open("rdm.pkl", "wb")
-        pickle.dump(dict_rdms, pkl_rdm)
-        pkl_rdm.close()
-    else:
+        print('No output file provided.')
+        print('Hence, the resulting dictionary containing the list of subject specific RDMs will not be saved automatically.')
+    elif outfile:
+        dict_rdms_out = {}
+        for ind, id in enumerate(ids):
+        dict_rdms_out[str(id)] = rdms[ind].to_json(orient='columns')
         outfile = outfile
-        print('outputfile is saved as `%s.pkl` in your current directory' % outfile)
-        pkl_rdm = open("%s.pkl" % outfile, "wb")
-        pickle.dump(dict_rdms, pkl_rdm)
-        pkl_rdm.close()
+        print('outputfile is saved as `%s.json` .' % outfile)
+        with open('%s.json' % outfile, 'w') as json_file:
+            json.dump(dict_rdms_out, json_file, indent=4)
+
+    return dict_rdms
+

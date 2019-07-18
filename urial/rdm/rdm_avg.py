@@ -1,35 +1,29 @@
-def rdm_avg(rdms):
+def rdm_avg(list_rdms):
     '''function to compute an average rdm from all
         RDMs in a given dictionary'''
 
-    global DefaultListOrderedDict
-    from collections import OrderedDict
 
-
-    class DefaultListOrderedDict(OrderedDict):
-        def __missing__(self,k):
-            self[k] = []
-            return self[k]
-
-
-    from os.path import join as opj
-    from scipy.io.matlab import loadmat
     import pandas as pd
-    from collections import OrderedDict
-    import pickle
     import numpy as np
+    import json
 
-    with open(rdms, 'rb') as f:
-        dict_rdms = pickle.load(f)
+    if isinstance(list_rdms, str) is True:
+        with open(list_rdms) as json_file:
+            data = json.load(json_file)
 
-    rdms = dict_rdms['rdm']
-    conds = rdms[0].keys()
+        dict_rdms = {}
 
-    for index, rdm in enumerate(rdms):
-        rdms[index] = rdms[index].to_numpy()
+        for key, value in data.items():
+            dict_rdms[key] = pd.read_json(value)
 
-    global avg_rdm
+    if isinstance(list_rdms, dict) is True:
+        dict_rdms = list_rdms
 
-    avg_rdm = pd.DataFrame(np.mean(rdms, axis=0), columns=conds)
+        rdms = []
 
-    return(avg_rdm)
+        for rdm in dict_rdms.values():
+            rdms.append(rdm.to_numpy())
+
+    avg_rdm = pd.DataFrame(np.mean(rdms, axis=0), columns=list(dict_rdms[list(dict_rdms.keys())[0]].columns))
+
+    return avg_rdm
